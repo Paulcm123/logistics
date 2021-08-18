@@ -9,24 +9,16 @@ if (isset($_POST['login'])) {
 	if (!is_null($user)) {
 		$passwd=md5($_POST['pass']);
 		if ($passwd==$user['pass']) {
-			if ($user['status']=='disabled') {
-				# regrets
-				$_SESSION['bad-mes'] = "Your account has been disabled, please contact administrator!";
-				header("location: login.php");
-			} else{
 				$_SESSION['uid'] = $user['id'];
 				$_SESSION['utype'] = $user['utype'];
 				$_SESSION['good-mes'] = "Logged in Successfully!";
-				header("location: ../welcome/dashboard.php");
-			}
+				header("location: ../dash");
 		} else {
 			$_SESSION['bad-mes'] = "Incorrect password!";
-			header("location: login.php");
 		}
 		
 	} else {
 		$_SESSION['bad-mes'] = "User account was not found!";
-		header("location: login.php");
 	}
 }
 
@@ -47,7 +39,7 @@ if (isset($_POST['login'])) {
 				<br>
 				<div class="form-group">
 					<label for="password">Password;</label>
-					<input class="form-control" type="password" name="password" placeholder="Enter password..." required>
+					<input class="form-control" type="password" name="pass" placeholder="Enter password..." required>
 				</div><br>
 				<a href="signup.php">Don't have an account?</a>
 				<button style="float:right;" name="login" class="btn btn-primary" type="submit">LOGIN</button>
