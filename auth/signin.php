@@ -10,7 +10,7 @@ if (isset($_POST['login'])) {
 		$passwd=md5($_POST['pass']);
 		if ($passwd==$user['pass']) {
 				$_SESSION['uid'] = $user['id'];
-				$_SESSION['utype'] = $user['utype'];
+				//$_SESSION['utype'] = $user['utype'];
 				$_SESSION['good-mes'] = "Logged in Successfully!";
 				header("location: ../dash");
 		} else {
