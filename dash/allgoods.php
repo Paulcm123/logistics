@@ -3,6 +3,10 @@
 include '../shared/session.php';
 include '../shared/header.php';
 
+# search goods
+# add goods
+# delete goods
+
 ?>
 
 <?php if (isset($_SESSION['good-mes'])): ?>

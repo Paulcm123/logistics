@@ -1,6 +1,6 @@
 <?php 
-include '../shared/header.php';
 include '../shared/session.php';
+include '../shared/header.php';
 
 if (isset($_POST['register'])) {
 	#check passwords
@@ -17,8 +17,7 @@ if (isset($_POST['register'])) {
 				# make session
 				$users=$conn->query("SELECT * FROM users WHERE email='".$_POST['email']."'");
 				$user=$users->fetch_assoc();
-				$_SESSION['uid'] = $user['id'];
-				$_SESSION['utype'] = 'regular';
+				$_SESSION['user'] = $user;
 				$_SESSION['good-mes'] = "registration was successful";
 				header('location: ../dash');
 			} else {
