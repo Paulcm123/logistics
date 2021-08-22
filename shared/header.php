@@ -8,50 +8,38 @@
 
 </head>
 <body>
-	<nav class="navbar sticky-top p-3 bg-dark navbar-dark">
-		<a class="navbar-brand" href="#">Logistics Dashboard</a>
-		<div class="d-flex flex-row">
-			<form class="form-inline p-1">
-			    <div class="input-group">
-			      	<div class="input-group-prepend">
-			        	<span class="input-group-text">@</span>
-			      	</div>
-			      	<input type="text" class="form-control" placeholder="name...">
-			    </div>
-			</form>
-			<form class="form-inline p-1">
-			    <div class="input-group">
-			      	<div class="input-group-prepend">
-			        	<span class="input-group-text">@</span>
-			      	</div>
-			      	<input type="text" class="form-control" placeholder="from...">
-			    </div>
-			</form>
-			<form class="form-inline p-1">
-			    <div class="input-group">
-			      	<div class="input-group-prepend">
-			        	<span class="input-group-text">@</span>
-			      	</div>
-			      	<input type="text" class="form-control" placeholder="to...">
-			    </div>
-			</form>
-		</div>
-	</nav>
-	<div class="container container-fluid">
-		<div class="row justify-content-center">
-			<div class="col-sm-3">
-				<div class="card text-center">
-					<div class="card-header p-5">
-						 <img src="../files/user-icon.jpg" class="rounded-circle img-fluid" alt="Cinque Terre"> 
-						 <p class="p-3">username</p>
-						 <a class="btn btn-secondary" href="">Sign out</a>
-					</div>
-					<div class="card-body p-4 d-grid gap-4">
-						<a class="btn btn-primary" href="">All Goods</a>
-						<a class="btn btn-primary" href="">In Transit</a>
-						<a class="btn btn-primary" href="">Awaiting Pickup</a>
+	<?php if (isset($_SESSION['user'])): ?>
+		<nav class="navbar sticky-top p-3 bg-primary navbar-dark">
+			<a class="navbar-brand" href="#">Logistics Dashboard</a>
+		</nav>
+		<div class="row">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="card text-center text-primary">
+						<div class="card-header p-5">
+							<?php if (isset($_SESSION['user']['avatar'])): ?>
+								<img src="<?php echo '../files/'.$_SESSION['user']['avatar'] ?>" class="rounded-circle img-fluid" alt="Cinque Terre"> 
+							<?php else: ?>
+								<img src="../files/user_icon.png" class="rounded-circle img-fluid" alt="Cinque Terre">
+							<?php endif; ?>
+							<p class="p-3"><?php echo $_SESSION['user']['fname'].' '.$_SESSION['user']['lname']; ?></p>
+							<a class="btn btn-outline-danger" href="../auth/signout.php">Sign out</a>
+						</div>
+						<div class="card-body p-4 d-grid gap-4">
+							<p>@Admin</p>
+							<a class="btn btn-outline-dark" href="">Shipments</a>
+							<a class="btn btn-outline-dark" href="">In Transit</a>
+							<a class="btn btn-outline-dark" href="">Awaiting Pickup</a>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-md-8">
+				<div class="col">
+		
+	<?php else: ?>
+
+		<div class="container container-fluid">
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+
+	<?php endif ?>
 				

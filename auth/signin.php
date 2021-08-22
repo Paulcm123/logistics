@@ -1,6 +1,6 @@
 <?php 
-include '../shared/header.php';
 include '../shared/session.php';
+include '../shared/header.php';
 
 if (isset($_POST['login'])) {
 	$users=$conn->query("SELECT * FROM users WHERE email='".$_POST['email']."'");
@@ -9,10 +9,12 @@ if (isset($_POST['login'])) {
 	if (!is_null($user)) {
 		$passwd=md5($_POST['pass']);
 		if ($passwd==$user['pass']) {
-				$_SESSION['uid'] = $user['id'];
-				//$_SESSION['utype'] = $user['utype'];
+			if ($user['status']=='disabled') {
+				$_SESSION['bad-mes'] = "Your account has been disabled, please contact administrator!";
+			} else{
+				$_SESSION['user'] = $user;
 				$_SESSION['good-mes'] = "Logged in Successfully!";
-				header("location: ../dash");
+				header("location: ../dash");			}
 		} else {
 			$_SESSION['bad-mes'] = "Incorrect password!";
 		}
