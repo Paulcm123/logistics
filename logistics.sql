@@ -48,7 +48,7 @@ CREATE TABLE `shipments` (
   `destination` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp(),
   `description` varchar(222) NOT NULL,
-  `status` varchar(255) NOT NULL DEFAULT '0'
+  `status` varchar(255) NOT NULL DEFAULT 'pickup'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
