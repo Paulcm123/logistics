@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 21, 2021 at 11:01 AM
+-- Generation Time: Aug 23, 2021 at 07:46 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -48,7 +48,7 @@ CREATE TABLE `shipments` (
   `destination` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp(),
   `description` varchar(222) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT 0
+  `status` varchar(255) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -59,6 +59,8 @@ CREATE TABLE `shipments` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
+  `location` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `fname` varchar(255) NOT NULL,
   `lname` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -91,7 +93,8 @@ ALTER TABLE `shipments`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location` (`location`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -113,7 +116,7 @@ ALTER TABLE `shipments`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -127,6 +130,12 @@ ALTER TABLE `shipments`
   ADD CONSTRAINT `origin` FOREIGN KEY (`origin`) REFERENCES `locations` (`id`),
   ADD CONSTRAINT `receiver_id` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `sender_id` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `location` FOREIGN KEY (`location`) REFERENCES `locations` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
