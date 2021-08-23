@@ -3,7 +3,7 @@ include '../shared/session.php';
 include '../shared/header.php';
 
 if (isset($_POST['login'])) {
-	$users=$conn->query("SELECT * FROM users WHERE email='".$_POST['email']."'");
+	$users=$conn->query("SELECT * FROM users WHERE username='".$_POST['username']."'");
 	$user=$users->fetch_assoc();
 
 	if (!is_null($user)) {
@@ -33,10 +33,18 @@ if (isset($_POST['login'])) {
 		</div>
 
 		<div class="card-body">
+			<?php if (isset($_SESSION['bad-mes'])): ?>
+
+				<div class="alert alert-danger">
+					<?php echo $_SESSION['bad-mes']; unset($_SESSION['bad-mes']); ?>
+				</div>
+
+			<?php endif ?>
+			
 			<form method="post">
 				<div class="form-group">
-					<label for="email">Email;</label>
-					<input class="form-control" type="email" name="email" placeholder="Enter email..." required>
+					<label for="username">@username;</label>
+					<input class="form-control" type="text" name="username" placeholder="Enter username..." required>
 				</div>
 				<br>
 				<div class="form-group">

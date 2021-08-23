@@ -10,26 +10,42 @@
 <body>
 	<?php if (isset($_SESSION['user'])): ?>
 		<nav class="navbar sticky-top p-3 bg-primary navbar-dark">
-			<a class="navbar-brand" href="#">Logistics Dashboard</a>
+			<a class="navbar-brand" href="../dash">Logistics Dashboard</a>
 		</nav>
 		<div class="row">
 			<div class="row">
-				<div class="col-sm-3">
-					<div class="card text-center text-primary">
+				<div class="col-sm-2">
+					<div class="card text-center text-info">
 						<div class="card-header p-5">
 							<?php if (isset($_SESSION['user']['avatar'])): ?>
 								<img src="<?php echo '../files/'.$_SESSION['user']['avatar'] ?>" class="rounded-circle img-fluid" alt="Cinque Terre"> 
 							<?php else: ?>
-								<img src="../files/user_icon.png" class="rounded-circle img-fluid" alt="Cinque Terre">
+								<img style="height:99px" src="../files/user_icon.png" class="rounded-circle img-fluid" alt="Cinque Terre">
 							<?php endif; ?>
-							<p class="p-3"><?php echo $_SESSION['user']['fname'].' '.$_SESSION['user']['lname']; ?></p>
+							<p class="pt-4"><?php echo $_SESSION['user']['fname'].' '.$_SESSION['user']['lname']; ?></p>
+							<p>@<?php echo $_SESSION['user']['username']; ?></p>
 							<a class="btn btn-outline-danger" href="../auth/signout.php">Sign out</a>
 						</div>
-						<div class="card-body p-4 d-grid gap-4">
-							<p>@Admin</p>
-							<a class="btn btn-outline-dark" href="">Shipments</a>
-							<a class="btn btn-outline-dark" href="">In Transit</a>
-							<a class="btn btn-outline-dark" href="">Awaiting Pickup</a>
+						<div class="card-body d-grid gap-4">
+							<a class="btn btn-outline-info" href="../auth/profile.php">Edit Profile</a>
+							<a class="btn btn-outline-info" href="../dash/new_shipment.php">+ Add Shipment</a>
+
+							<?php if ($_SESSION['user']['utype'] == 'admin' || $_SESSION['user']['utype'] == 'staff'): ?>
+
+								<?php if ($_SESSION['user']['utype'] == 'admin'): ?>
+
+									<a class="btn btn-outline-info" href="../dash/users.php">Users</a>
+									<a class="btn btn-outline-info" href="../dash/shipments.php">Shipments</a>
+									<a class="btn btn-outline-info" href="../dash/locations.php">Locations</a>
+
+								<?php endif ?>
+
+								<a class="btn btn-outline-info" href="../dash/incoming.php">Incoming</a>
+								<a class="btn btn-outline-info" href="../dash/outgoing.php">Outgoing</a>
+								<a class="btn btn-outline-info" href="../dash/pickup.php">Awaiting Pickup</a>
+								<a class="btn btn-outline-info" href="../dash/delivery.php">Awaiting Delivery</a>
+
+							<?php endif ?>
 						</div>
 					</div>
 				</div>
