@@ -3,9 +3,57 @@
 include '../shared/session.php';
 include '../shared/header.php';
 
-# search goods
-# add goods
-# delete goods
+	
+
+$users=$conn->query("SELECT * FROM users WHERE id='".$_SESSION['user']['id']."'");
+$user=$users->fetch_assoc();
+
+if ($user['utype'] == 'admin' || $user['utype'] == 'staff') {
+
+	if (isset($_POST['collect'])) {
+
+		if ($conn->query("UPDATE shipments SET status='Awaiting shipment' WHERE id=".$_POST['id']."")) {
+			$_SESSION['good-mes'] = 'Update success';
+		} else {
+			$_SESSION['bad-mes'] = 'Update failed';
+		}
+	}
+	if (isset($_POST['dispatch'])) {
+
+		if ($conn->query("UPDATE shipments SET status='Shipping' WHERE id=".$_POST['id']."")) {
+			$_SESSION['good-mes'] = 'Update success';
+		} else {
+			$_SESSION['bad-mes'] = 'Update failed';
+		}
+	}
+	if (isset($_POST['receive'])) {
+
+		if ($conn->query("UPDATE shipments SET status='Awaiting delivery' WHERE id=".$_POST['id']."")) {
+			$_SESSION['good-mes'] = 'Update success';
+		} else {
+			$_SESSION['bad-mes'] = 'Update failed';
+		}
+	}
+	if (isset($_POST['deliver'])) {
+
+		if ($conn->query("UPDATE shipments SET status='Delivered' WHERE id=".$_POST['id']."")) {
+			$_SESSION['good-mes'] = 'Update success';
+		} else {
+			$_SESSION['bad-mes'] = 'Update failed';
+		}
+	}
+	if (isset($_POST['delete'])) {
+
+		if ($conn->query("DELETE FROM shipments WHERE id=".$_POST['id']."")) {
+			$_SESSION['good-mes'] = 'Update success';
+		} else {
+			$_SESSION['bad-mes'] = 'Update failed';
+		}
+	}
+} else {
+
+	$_SESSION['bad-mes'] = 'This page failed authorize you! You may not be able to perform any actions';
+}
 
 ?>
 
@@ -16,6 +64,14 @@ include '../shared/header.php';
 	</div>
 
 <?php endif ?>
+
+<?php if (isset($_SESSION['bad-mes'])): ?>
+
+	<div class="alert alert-danger">
+		<?php echo $_SESSION['bad-mes']; unset($_SESSION['bad-mes']); ?>
+	</div>
+
+<?php endif; ?>
 
 
 <div class="card">
@@ -40,14 +96,14 @@ include '../shared/header.php';
 				<tbody>
 					<?php 
 
-					$shipments=$conn->query("SELECT * FROM shipments");
+					$shipments=$conn->query("select distinct shipments.id,shipments.date,shipments.status,sender.username sender,receiver.username receiver,origin.name origin,destination.name destination from shipments inner join users sender on shipments.sender_id=sender.id inner join users receiver on shipments.receiver_id=receiver.id inner join locations origin on shipments.origin=origin.id inner join locations destination on shipments.destination=destination.id");
 
 					while ($shipment=$shipments->fetch_assoc()): ?>
 
 						<tr>
 							<td><?php echo $shipment['id']; ?></td>
-							<td><?php echo $shipment['sender_id']; ?></td>
-							<td><?php echo $shipment['receiver_id']; ?></td>
+							<td><?php echo $shipment['sender']; ?></td>
+							<td><?php echo $shipment['receiver']; ?></td>
 							<td><?php echo $shipment['origin']; ?></td>
 							<td><?php echo $shipment['destination']; ?></td>
 							<td><?php echo $shipment['date']; ?></td>
@@ -56,16 +112,16 @@ include '../shared/header.php';
 								<form method="post">
 									<input type="hidden" name="id" value="<?php echo $shipment['id']; ?>">
 
-									<?php if ($shipment['status'] == 'pickup'): ?>
+									<?php if ($shipment['status'] == 'Awaiting pickup'): ?>
 										<button name="collect" class="btn btn-sm btn-success">Collect</button>
 
-									<?php elseif ($shipment['status'] == 'shipment'): ?>
+									<?php elseif ($shipment['status'] == 'Awaiting shipment'): ?>
 										<button name="dispatch" class="btn btn-sm btn-success">Dispatch</button>
 
-									<?php elseif ($shipment['status'] == 'shipping'): ?>
+									<?php elseif ($shipment['status'] == 'Shipping'): ?>
 										<button name="receive" class="btn btn-sm btn-success">Receive</button>
 
-									<?php elseif ($shipment['status'] == 'delivery'): ?>
+									<?php elseif ($shipment['status'] == 'Awaiting delivery'): ?>
 										<button name="deliver" class="btn btn-sm btn-success">Deliver</button>
 
 									<?php else: ?>
