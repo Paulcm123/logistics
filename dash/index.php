@@ -25,9 +25,10 @@ include '../shared/header.php';
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query('select * from users')); ?></h1>
 					</div>
 					<div class="card-footer">
+
 						<p>Total Users</p>
 					</div>
 				</div>
@@ -35,7 +36,7 @@ include '../shared/header.php';
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query("select * from shipments")); ?></h1>
 					</div>
 					<div class="card-footer">
 						<p>Total Shipments</p>
@@ -45,7 +46,7 @@ include '../shared/header.php';
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query("select * from shipments where status='Shipping'")); ?></h1>
 					</div>
 					<div class="card-footer">
 						<p>In Transit</p>
@@ -55,7 +56,7 @@ include '../shared/header.php';
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query("select * from shipments where status='Awaiting delivery'")); ?></h1>
 					</div>
 					<div class="card-footer">
 						<p>Awaiting Delivery</p>
@@ -65,7 +66,7 @@ include '../shared/header.php';
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query("select * from shipments where status='Awaiting shipment'")); ?></h1>
 					</div>
 					<div class="card-footer">
 						<p>Awaiting Dispatch</p>
@@ -106,7 +107,7 @@ include '../shared/header.php';
 		</div>
 		
 	</div>
-</div>
+</div><br>
 <?php elseif ($_SESSION['user']['utype'] == 'staff'): ?>
 
 <div class="card text-info">
@@ -118,40 +119,40 @@ include '../shared/header.php';
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query("select * from shipments where status='Shipping' and destination=".$_SESSION['user']['location']."")); ?></h1>
 					</div>
 					<div class="card-footer">
-						<p>Incoming</p>
+						<a href="incoming.php"><p>Incoming</p></a>
 					</div>
 				</div>
 			</div>
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query("select * from shipments where status='Awaiting shipment' and origin=".$_SESSION['user']['location']."")); ?></h1>
 					</div>
 					<div class="card-footer">
-						<p>Outgoing</p>
+						<a href="outgoing.php"><p>Outgoing</p></a>
 					</div>
 				</div>
 			</div>
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query("select * from shipments where status='Awaiting delivery' and destination=".$_SESSION['user']['location']."")); ?></h1>
 					</div>
 					<div class="card-footer">
-						<p>Awaiting Delivery</p>
+						<a href="delivery.php"><p>Awaiting Delivery</p></a>
 					</div>
 				</div>
 			</div>
 			<div class="col">
 				<div class="card text-center">
 					<div class="card-body">
-						<h1 class="display-1">33</h1>
+						<h1 class="display-1"><?php echo mysqli_num_rows($conn->query("select * from shipments where status='Awaiting pickup' and origin=".$_SESSION['user']['location']."")); ?></h1>
 					</div>
 					<div class="card-footer">
-						<p>Awaiting Dispatch</p>
+						<a href="pickup.php"><p>Awaiting Pickup</p></a>
 					</div>
 				</div>
 			</div>
@@ -189,9 +190,10 @@ include '../shared/header.php';
 		</div>
 		
 	</div>
-</div>
+</div><br>
 
-<?php else: ?>
+
+<?php endif ?>
 
 <div class="card">
 	<div class="card-header">
@@ -208,35 +210,49 @@ include '../shared/header.php';
 				<h1 class="card-title">Incoming</h1>
 			</div>
 			<div class="card-body">
-				<div class="alert alert-info">
-					You do not have any outgoing shipments
-				</div>
-				<div class="card">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-sm-3">
-								<b>From:</b><br>
-								<img style="height: 30px;" src="../files/user_icon.png" class="rounded-circle img-fluid" alt="Cinque Terre">
-								<p>@username</p>
-							</div>
+				<?php if ($incoming=$conn->query("select u1.fname,u1.lname,shipments.description,shipments.status,locations.name,locations.city,locations.country from shipments inner join users on shipments.receiver_id=users.id inner join users u1 on shipments.sender_id=u1.id inner join locations on shipments.destination=locations.id where shipments.receiver_id=".$_SESSION['user']['id']."")): ?>
 
-							<div class="col">
-								<b>Description:</b>
-								<p>Description</p>
-							</div>
+					<?php if (mysqli_num_rows($incoming) == 0): ?>
 
-							<div class="col-sm-2">
-								<b>Address:</b>
-								<p>Address</p>
-							</div>
+						<div class="alert alert-info">
+							You do not have any incoming shipments
+						</div>
 
-							<div class="col-sm-3 text-end">
-								<b>Status:</b>
-								<button class="btn btn-info disabled">Status</button>
+					<?php endif; ?>
+
+					<?php while ($item=$incoming->fetch_assoc()): ?>
+
+					<div class="card">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-3">
+									<b>From:</b><br>
+									<img style="height: 30px;" src="../files/user_icon.png" class="rounded-circle img-fluid" alt="Cinque Terre">
+									<b><?php echo $item['fname'].' '.$item['lname']; ?></b>
+								</div>
+
+								<div class="col">
+									<b>Description:</b>
+									<p><?php echo $item['description']; ?></p>
+								</div>
+
+								<div class="col-sm-2">
+									<b>Address:</b>
+									<p><?php echo $item['name'].', '.$item['city'].', '.$item['country'].' '; ?></p>
+								</div>
+
+								<div class="col-sm-3 text-end">
+									<b>Status:</b>
+									<button class="btn btn-info disabled"><?php echo $item['status']; ?></button>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
+					</div><br>
+
+					<?php endwhile; ?>
+
+				<?php endif ?>
+
 			</div>
 		</div><br>
 		<div class="card">
@@ -244,41 +260,52 @@ include '../shared/header.php';
 				<h1 class="card-title">Outgoing</h1>
 			</div>
 			<div class="card-body">
-				<div class="alert alert-info">
-					You do not have any incoming shipments
-				</div>
-				<div class="card">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-sm-3">
-								<b>To:</b><br>
-								<img style="height: 30px;" src="../files/user_icon.png" class="rounded-circle img-fluid" alt="Cinque Terre">
-								<p>@username</p>
-							</div>
+				<?php if ($outgoing=$conn->query("select u1.fname,u1.lname,shipments.description,shipments.status,locations.name,locations.city,locations.country from shipments inner join users on users.id=shipments.sender_id inner join users u1 on u1.id=shipments.receiver_id inner join locations on shipments.destination=locations.id where shipments.sender_id=".$_SESSION['user']['id']."")): ?>
+					
+					<?php if (mysqli_num_rows($outgoing) == 0): ?>
 
-							<div class="col">
-								<b>Description:</b>
-								<p>Description</p>
-							</div>
-
-							<div class="col-sm-2">
-								<b>Address:</b>
-								<p>Address</p>
-							</div>
-
-							<div class="col-sm-3 text-end">
-								<b>Status:</b>
-								<button class="btn btn-info disabled">Awaiting delivery</button>
-							</div>
+						<div class="alert alert-info">
+							You do not have any outgoing shipments
 						</div>
-					</div>
-				</div>
+
+					<?php endif; ?>
+
+					<?php while ($item=$outgoing->fetch_assoc()): ?>
+
+						<div class="card">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-sm-3">
+										<b>To:</b><br>
+										<img style="height: 30px;" src="../files/user_icon.png" class="rounded-circle img-fluid" alt="Cinque Terre">
+										<b><?php echo $item['fname'].' '.$item['lname']; ?></b>
+									</div>
+
+									<div class="col">
+										<b>Description:</b>
+										<p><?php echo $item['description']; ?></p>
+									</div>
+
+									<div class="col-sm-2">
+										<b>Address:</b>
+										<p><?php echo $item['name'].', '.$item['city'].', '.$item['country'].' '; ?></p>
+									</div>
+
+									<div class="col-sm-3 text-end">
+										<b>Status:</b>
+										<button class="btn btn-info disabled"><?php echo $item['status']; ?></button>
+									</div>
+								</div>
+							</div>
+						</div><br>
+
+					<?php endwhile; ?>
+				
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
 </div>
-
-<?php endif ?>
 
 
 <?php include '../shared/footer.php'; ?>
