@@ -2,6 +2,10 @@
 include '../shared/session.php';
 include '../shared/header.php';
 
+if (isset($_SESSION['user'])) {
+	header("location: ../dash");
+}
+
 if (isset($_POST['login'])) {
 	$users=$conn->query("SELECT * FROM users WHERE username='".$_POST['username']."'");
 	$user=$users->fetch_assoc();
@@ -13,6 +17,9 @@ if (isset($_POST['login'])) {
 				$_SESSION['bad-mes'] = "Your account has been disabled, please contact administrator!";
 			} else{
 				$_SESSION['user'] = $user;
+				$locations=$conn->query("SELECT * FROM locations WHERE id='".$user['location']."'");
+				$station=$locations->fetch_assoc();
+				$_SESSION['station'] = $station;
 				$_SESSION['good-mes'] = "Logged in Successfully!";
 				header("location: ../dash");			}
 		} else {

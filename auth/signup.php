@@ -2,6 +2,10 @@
 include '../shared/session.php';
 include '../shared/header.php';
 
+if (isset($_SESSION['user'])) {
+	header("location: ../dash");
+}
+
 if (isset($_POST['register'])) {
 	#check passwords
 	if ($_POST['pass']==$_POST['con-pass']) {
@@ -18,6 +22,9 @@ if (isset($_POST['register'])) {
 				$users=$conn->query("SELECT * FROM users WHERE username='".$_POST['username']."'");
 				$user=$users->fetch_assoc();
 				$_SESSION['user'] = $user;
+				$locations=$conn->query("SELECT * FROM locations WHERE id='".$user['location']."'");
+				$station=$locations->fetch_assoc();
+				$_SESSION['station'] = $station;
 				$_SESSION['good-mes'] = "Registration was successful";
 				header('location: ../dash');
 			} else {

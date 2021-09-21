@@ -3,6 +3,9 @@
 include '../shared/session.php';
 include '../shared/header.php';
 
+if (!isset($_SESSION['user'])) {
+	header("location: ../");
+}
 ?>
 
 <?php if (isset($_SESSION['good-mes'])): ?>
@@ -202,7 +205,7 @@ include '../shared/header.php';
 	<div class="card-body">
 		<div class="card bg-info">
 			<div class="card-body text-end">
-				<a href="new_shipment.php" class="btn btn-primary">+ Add New Shipment</a>
+				<a href="new_shipment.php" class="btn btn-primary"><span class="fa fa-plus-circle"></span> Add New Shipment</a>
 			</div>
 		</div><br>
 		<div class="card">

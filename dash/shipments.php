@@ -3,7 +3,10 @@
 include '../shared/session.php';
 include '../shared/header.php';
 
-	
+
+if (!isset($_SESSION['user'])) {
+	header("location: ../");
+}	
 
 $users=$conn->query("SELECT * FROM users WHERE id='".$_SESSION['user']['id']."'");
 $user=$users->fetch_assoc();
@@ -90,7 +93,7 @@ if ($user['utype'] == 'admin' || $user['utype'] == 'staff') {
 						<th>Destination</th>
 						<th>Date</th>
 						<th>Status</th>
-						<th>Action</th>
+						<th colspan="2">Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -108,31 +111,41 @@ if ($user['utype'] == 'admin' || $user['utype'] == 'staff') {
 							<td><?php echo $shipment['destination']; ?></td>
 							<td><?php echo $shipment['date']; ?></td>
 							<td><?php echo $shipment['status']; ?></td>
-							<td>
-								<form method="post">
-									<input type="hidden" name="id" value="<?php echo $shipment['id']; ?>">
+							<form method="post">
+								<input type="hidden" name="id" value="<?php echo $shipment['id']; ?>">
 
-									<?php if ($shipment['status'] == 'Awaiting pickup'): ?>
+								<?php if ($shipment['status'] == 'Awaiting pickup'): ?>
+									<td>
 										<button name="collect" class="btn btn-sm btn-success">Collect</button>
+									</td>
 
-									<?php elseif ($shipment['status'] == 'Awaiting shipment'): ?>
+								<?php elseif ($shipment['status'] == 'Awaiting shipment'): ?>
+									<td>
 										<button name="dispatch" class="btn btn-sm btn-success">Dispatch</button>
+									</td>
 
-									<?php elseif ($shipment['status'] == 'Shipping'): ?>
+								<?php elseif ($shipment['status'] == 'Shipping'): ?>
+									<td>
 										<button name="receive" class="btn btn-sm btn-success">Receive</button>
+									</td>
 
-									<?php elseif ($shipment['status'] == 'Awaiting delivery'): ?>
+								<?php elseif ($shipment['status'] == 'Awaiting delivery'): ?>
+									<td>
 										<button name="deliver" class="btn btn-sm btn-success">Deliver</button>
+									</td>
 
-									<?php else: ?>
+								<?php else: ?>
+									<td>
 										<button class="btn btn-sm btn-success disabled">Delivered</button>
+									</td>
 
-									<?php endif; ?>
+								<?php endif; ?>
 
-
-									<button name="delete" class="btn btn-sm btn-danger" >Delete</button>
-								</form>
-							</td>
+								<td>
+									<button name="delete" class="btn btn-sm btn-danger" ><span class="fa fa-trash-o"></span></button>
+								</td>
+								
+							</form>
 						</tr>
 
 					<?php endwhile; ?>

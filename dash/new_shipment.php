@@ -4,6 +4,10 @@ include '../shared/session.php';
 include '../shared/header.php';
 
 
+if (!isset($_SESSION['user'])) {
+	header("location: ../");
+}
+
 if (isset($_SESSION['user'])) {
 
 	if (isset($_POST['shipment'])) {
@@ -57,7 +61,7 @@ if (isset($_SESSION['user'])) {
 				</div><br>
 				<div class="form-group">
 					<label for="origin">From;</label>
-					<select class="form-select" name="origin" aria-label="Default select example">
+					<select class="form-select" name="origin">
 						<option selected>Select Pickup location</option>
 						<?php 
 							$locations=$conn->query("SELECT * FROM locations");
@@ -69,7 +73,7 @@ if (isset($_SESSION['user'])) {
 				</div><br>
 				<div class="form-group">
 					<label for="destination">To;</label>
-					<select class="form-select" name="destination" aria-label="Default select example">
+					<select class="form-select" name="destination" data-live-search="true">
 						<option selected>Select Drop off location</option>
 						<?php 
 							$locations=$conn->query("SELECT * FROM locations");

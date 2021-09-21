@@ -2,7 +2,11 @@
 
 include '../shared/session.php';
 include '../shared/header.php';
-	
+
+
+if (!isset($_SESSION['user'])) {
+	header("location: ../");
+}	
 
 $users=$conn->query("SELECT * FROM users WHERE id='".$_SESSION['user']['id']."'");
 $user=$users->fetch_assoc();

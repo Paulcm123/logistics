@@ -4,9 +4,12 @@ include '../shared/session.php';
 include '../shared/header.php';
 
 
+if (!isset($_SESSION['user'])) {
+	header("location: ../");
+}
+
 $users=$conn->query("SELECT * FROM users WHERE id='".$_SESSION['user']['id']."'");
 $user=$users->fetch_assoc();
-
 if ($user['utype'] == 'admin') {
 	if (isset($_POST['mk-admin'])) {
 			if ($conn->query("UPDATE users SET utype='admin' WHERE id=".$_POST['id']."")) {
@@ -89,7 +92,7 @@ if ($user['utype'] == 'admin') {
 						<th>Email</th>
 						<th>Ranking</th>
 						<th>Status</th>
-						<th>Actions</th>
+						<th colspan="5">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -106,30 +109,39 @@ if ($user['utype'] == 'admin') {
 							<td><?php echo $user['email']; ?></td>
 							<td><?php echo $user['utype']; ?></td>
 							<td><?php echo $user['status']; ?></td>
-							<td>
-								<form method="post">
-									<input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-									<?php if ($user['utype'] != 'admin'): ?>
-										<button name="mk-admin" class="btn btn-sm btn-primary">MAKE ADMIN</button>
-									<?php endif; ?>
-									<?php if ($user['utype'] != 'staff'): ?>
-										<button name="mk-staff" class="btn btn-sm btn-primary">MAKE STAFF</button>
-									<?php endif; ?>
-									<?php if ($user['utype'] != 'regular'): ?>
-										<button name="demote" class="btn btn-sm btn-primary">DEMOTE</button>
-									<?php endif; ?>
+							<form method="post">
+								<input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+								<?php if ($user['utype'] != 'admin'): ?>
+									<td>
+										<button name="mk-admin" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="top" title="MAKE ADMIN"><span class="fa fa-level-up"></span></button>
+									</td>
+								<?php endif; ?>
+								<?php if ($user['utype'] != 'staff'): ?>
+									<td>
+										<button name="mk-staff" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="MAKE STAFF"><span class="fa fa-level-up"></span></button>
+									</td>
+								<?php endif; ?>
+								<?php if ($user['utype'] != 'regular'): ?>
+									<td>
+										<button name="demote" class="btn btn-sm btn-warning"><span class="fa fa-level-down" data-toggle="tooltip" data-placement="top" title="DEMOTE"></span></button>
+									</td>
+								<?php endif; ?>
 
 
-									<?php if ($user['status'] == 'active'): ?>
-										<button name="disable" class="btn btn-sm btn-warning" >Disable</button>
-									<?php else: ?>
-										<button name="enable" class="btn btn-sm btn-success">Enable</button>
-									<?php endif; ?>
-
-
-									<button name="delete" class="btn btn-sm btn-danger" >Delete</button>
-								</form>
-							</td>
+								<?php if ($user['status'] == 'active'): ?>
+									<td>
+										<button name="disable" class="btn btn-sm btn-secondary" ><span class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="DISABLE"></span></button>
+									</td>
+								<?php else: ?>
+									<td>
+										<button name="enable" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="ENABLE">Enable</button>
+									</td>
+								<?php endif; ?>
+								<td>
+									<button name="delete" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="DELETE"><span class="fa fa-trash-o"></span></button>
+								</td>
+								
+							</form>
 						</tr>
 
 					<?php endwhile; ?>

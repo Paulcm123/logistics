@@ -3,6 +3,10 @@
 include '../shared/session.php';
 include '../shared/header.php';
 
+if (!isset($_SESSION['user'])) {
+	header("location: ../");
+}
+
 $users=$conn->query("SELECT * FROM users WHERE id='".$_SESSION['user']['id']."'");
 $user=$users->fetch_assoc();
 
@@ -47,7 +51,7 @@ if ($user['utype'] == 'admin') {
 	<div class="card-body">
 		<div class="card bg-info">
 			<div class="card-body text-end">
-				<a href="new_location.php" class="btn btn-primary">+ Add New Location</a>
+				<a href="new_location.php" class="btn btn-primary"><span class="fa fa-plus-circle"></span> Add New Location</a>
 			</div>
 		</div><br>
 
@@ -77,7 +81,7 @@ if ($user['utype'] == 'admin') {
 							<td>
 								<form method="post">
 									<input type="hidden" name="id" value="<?php echo $location['id']; ?>">
-									<button name="delete" class="btn btn-sm btn-danger" >Delete</button>
+									<button name="delete" class="btn btn-sm btn-danger" ><span class="fa fa-trash-o"></span></button>
 								</form>
 							</td>
 						</tr>

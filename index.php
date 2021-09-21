@@ -24,12 +24,20 @@
       <li class="nav-item">
         <a class="nav-link px-3" href="">ABOUT</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link px-3" href="auth/signup.php">REGISTER</a>
-      </li>
-      <li>
-        <a class="btn btn-primary btn-lg" href="auth/signin.php">SIGN IN</a>
-      </li>
+      <?php 
+        session_start();
+        if (isset($_SESSION['user'])): ?>
+        <li>
+          <a class="btn btn-primary btn-lg" href="dash">DASHBOARD</a>
+        </li>
+      <?php else: ?>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary mr-1 btn-lg" href="auth/signup.php">REGISTER</a>
+        </li>
+        <li>
+          <a class="btn btn-primary btn-lg" href="auth/signin.php">SIGN IN</a>
+        </li>
+      <?php endif; ?>
     </ul>
     
   </nav>
@@ -56,7 +64,7 @@
           <div class="col"></div>
           <div class="col-md-4 text-left">
             <h1 >Welcome to Logistics</h1><br><br>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><br>
+            <p></p><br><br>
             <a class="btn btn-primary btn-lg" href="auth/signin.php">GET STARTED</a>
           </div>
         </div>
@@ -73,8 +81,7 @@
         <div class="row">
           <div class="col"></div>
           <div class="col-md-4 text-left">
-            <h1 >Welcome to Logistics</h1><br><br>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><br>
+            <h1 >Welcome to Logistics</h1><br><br><br><br>
             <a class="btn btn-primary btn-lg" href="auth/signin.php">GET STARTED</a>
           </div>
         </div>
@@ -91,7 +98,7 @@
           <div class="col"></div>
           <div class="col-md-4 text-left">
             <h1 >Welcome to Logistics</h1><br><br>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><br>
+            <p></p><br><br>
             <a class="btn btn-primary btn-lg" href="auth/signin.php">GET STARTED</a>
           </div>
         </div>

@@ -3,6 +3,9 @@
 include '../shared/session.php';
 include '../shared/header.php';
 
+if (!isset($_SESSION['user'])) {
+	header("location: ../");
+}
 
 if (isset($_POST['fname']) && $_POST['fname'] != $_SESSION['user']['fname']) {
 
